@@ -11,7 +11,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton('admin_email', function () {
+            return config('custom.admin_email');
+        });
     }
 
     /**
