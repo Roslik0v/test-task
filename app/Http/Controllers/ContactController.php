@@ -4,21 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactRequest;
 use App\Models\Contact;
-use Illuminate\Support\Facades\Mail;
+use App\Services\ContactService;
 
 class ContactController extends Controller
 {
+    protected ContactService $contactService;
+
+    public function __construct(ContactService $contactService)
+    {
+        $this->contactService = $contactService;
+    }
+
     public function store(ContactRequest $request)
     {
         $validated = $request->validated();
 
         $contact = Contact::create($validated);
 
-        Mail::raw("Имя: {$contact->name}\nТелефон: {$contact->phone}\nEmail: {$contact->email}", function ($message) {
-            $message->to('roslikovsemen@gmail.com')->subject('Новая заявка с формы');
-        });
+        $this->contactService->notifyAdmin($contact);
 
         return response()->json(['success' => true]);
     }
 }
+
 
