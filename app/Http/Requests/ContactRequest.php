@@ -24,12 +24,7 @@ class ContactRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'phone' => ['required', 'regex:/^(\+7|8)\d{10}$/'],
-            'email' => [
-                'required',
-                'email',
-                'max:255',
-                'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/'
-            ],
+            'email' => 'required|email|max:255',
         ];
     }
 }
